@@ -1,0 +1,22 @@
+//
+//  CustomButton.swift
+//  Country Flag Game
+//
+//  Created by Parker Engelson on 1/8/26.
+//
+
+import SwiftUI
+struct CustomButton {
+    var text: String
+    var background: Color = .yellow
+    var body: some View {
+        Text(text)
+            .foregroundColor(.cyan)
+            .padding()
+            .padding(.horizontal)
+            .background(background)
+            .cornerRadius(25)
+            .shadow(radius: 10)
+    }
+}
+
