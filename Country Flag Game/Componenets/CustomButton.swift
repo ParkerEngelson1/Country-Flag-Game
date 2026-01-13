@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-struct CustomButton {
+struct CustomButton: View {
     var text: String
     var background: Color = .yellow
     var body: some View {
@@ -20,3 +20,6 @@ struct CustomButton {
     }
 }
 
+#Preview {
+    CustomButton(text: "Next")
+}
