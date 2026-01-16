@@ -6,11 +6,23 @@
 //
 
 import SwiftUI
+
 @Observable
 class GameManager {
+    // Encapsulated state (previously top-level globals)
+    var questions = [Question]()
+    private(set) var index = 0
+    private(set) var playingGame = false
+    private(set) var answerSelected = false
+    private(set) var country = ""
+    private(set) var answerChoices = [Answer]()
+    private(set) var progress: CGFloat = 0.0
+    private(set) var score = 0
+
     init() {
         reset()
     }
+
     func reset() {
         loadQuestions()
         questions = questions.shuffled()
@@ -25,20 +37,29 @@ class GameManager {
         let countries = Data().countries
         if countries.count < 4 {
             print("There are only \(countries.count) countries listed in Data (must be atleast 4)")
-        }
-        else {
+        } else {
             questions.removeAll()
             for country in countries {
                 if UIImage(named: country) != nil {
                     var incorrectAnswer = [String]()
                     while incorrectAnswer.count < 3 {
-                        if let randomCountry = countries.randomElement(), randomCountry != country, !incorrectAnswer.contains(randomCountry) {
+                        if let randomCountry = countries.randomElement(),
+                           randomCountry != country,
+                           !incorrectAnswer.contains(randomCountry) {
                             incorrectAnswer.append(randomCountry)
                         }
                     }
-                    questions.append(Question(correctAnswer: Answer(text: country, isCorrect : true), incorrectAnswers: [Answer(text: incorrectAnswer[0], isCorrect: false), Answer(text: incorrectAnswer[1], isCorrect: false), Answer(text: incorrectAnswer[2], isCorrect: false)]))
-                }
-                else {
+                    questions.append(
+                        Question(
+                            correctAnswer: Answer(text: country, isCorrect: true),
+                            incorrectAnswers: [
+                                Answer(text: incorrectAnswer[0], isCorrect: false),
+                                Answer(text: incorrectAnswer[1], isCorrect: false),
+                                Answer(text: incorrectAnswer[2], isCorrect: false)
+                            ]
+                        )
+                    )
+                } else {
                     print("\(country) image cannot be found")
                 }
             }
@@ -53,8 +74,7 @@ class GameManager {
             country = nextQuestion.correctAnswer.text
             answerChoices = ([nextQuestion.correctAnswer] + nextQuestion.incorrectAnswers).shuffled()
             index += 1
-        }
-        else {
+        } else {
             playingGame = false
         }
     }
@@ -66,13 +86,3 @@ class GameManager {
         }
     }
 }
-
-var questions = [Question]()
-private(set) var index = 0
-private(set) var playingGame = false
-private(set) var answerSelected = false
-private(set) var country = ""
-private(set) var answerChoices = [Answer]()
-private(set) var progress: CGFloat = 0.0
-private(set) var score = 0
-
