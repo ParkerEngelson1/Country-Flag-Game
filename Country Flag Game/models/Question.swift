@@ -11,6 +11,7 @@ struct Answer: Identifiable {
     var text: String
     var isCorrect: Bool
 }
+
 struct Question: Identifiable {
     var id = UUID()
     var correctAnswer: Answer
